@@ -2,11 +2,7 @@
 #include <iostream>
 
 int main() {
-  try {
-    Database db("todo-list.db");
-  } catch (const std::exception &e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    return 1;
-  }
+  std::unique_ptr<db::Database> db = db::new_database("todo-list.db");
+
   return 0;
 }

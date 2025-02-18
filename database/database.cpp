@@ -1,17 +1,21 @@
 #include "database.hpp"
+#include <iostream>
+#include <stdexcept>
 
-Database::Database(const std::string &dbName) {
-  if (sqlite3_open(dbName.c_str(), &conn) != SQLITE_OK) {
-    throw std::runtime_error("Failed to open database: " +
-                             std::string(sqlite3_errmsg(conn)));
+db::Database::Database(const std::string &db_path)
+    : conn(nullptr, sqlite3_close) {
+  sqlite3 *raw_conn = nullptr;
+  if (sqlite3_open(db_path.c_str(), &raw_conn) != SQLITE_OK) {
+    throw std::runtime_error("Failed to open database");
   }
+  conn.reset(raw_conn);
 
-  createTables();
+  create_tables();
 }
 
-Database::~Database() { close(); }
+db::Database::~Database() { close(); }
 
-void Database::createTables() {
+void db::Database::create_tables() {
   const char *query = R"(
         CREATE TABLE IF NOT EXISTS section (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,16 +32,20 @@ void Database::createTables() {
         )";
 
   char *errMsg = nullptr;
-  if (sqlite3_exec(conn, query, nullptr, nullptr, &errMsg) != SQLITE_OK) {
+  if (sqlite3_exec(conn.get(), query, nullptr, nullptr, &errMsg) != SQLITE_OK) {
     std::string error = "Error creating tables: " + std::string(errMsg);
     sqlite3_free(errMsg);
     throw std::runtime_error(error);
   }
 }
 
-void Database::close() {
-  if (conn) {
-    sqlite3_close(conn);
-    conn = nullptr;
+void db::Database::close() { conn.reset(); }
+
+std::unique_ptr<db::Database> db::new_database(const std::string &db_path) {
+  try {
+    return std::make_unique<Database>(db_path);
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return nullptr;
   }
 }
