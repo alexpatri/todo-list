@@ -10,6 +10,8 @@ public:
   Database(const Database &) = delete;
   Database &operator=(const Database &) = delete;
 
+  void close();
+
   ~Database();
 
 private:
@@ -18,5 +20,4 @@ private:
 
   explicit Database(const std::string &);
   void create_tables();
-  void close();
 };
