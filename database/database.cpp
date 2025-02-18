@@ -1,8 +1,17 @@
 #include "database.hpp"
-#include <iostream>
 #include <stdexcept>
 
-db::Database::Database(const std::string &db_path)
+std::unique_ptr<Database> Database::instance = nullptr;
+
+std::unique_ptr<Database> &
+Database::get_instance(const std::string &db_path) {
+  if (!instance) {
+    instance = std::unique_ptr<Database>(new Database(db_path));
+  }
+  return instance;
+}
+
+Database::Database(const std::string &db_path)
     : conn(nullptr, sqlite3_close) {
   sqlite3 *raw_conn = nullptr;
   if (sqlite3_open(db_path.c_str(), &raw_conn) != SQLITE_OK) {
@@ -13,9 +22,9 @@ db::Database::Database(const std::string &db_path)
   create_tables();
 }
 
-db::Database::~Database() { close(); }
+Database::~Database() { close(); }
 
-void db::Database::create_tables() {
+void Database::create_tables() {
   const char *query = R"(
         CREATE TABLE IF NOT EXISTS section (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,13 +48,4 @@ void db::Database::create_tables() {
   }
 }
 
-void db::Database::close() { conn.reset(); }
-
-std::unique_ptr<db::Database> db::new_database(const std::string &db_path) {
-  try {
-    return std::make_unique<Database>(db_path);
-  } catch (const std::exception &e) {
-    std::cerr << "Error: " << e.what() << std::endl;
-    return nullptr;
-  }
-}
+void Database::close() { conn.reset(); }

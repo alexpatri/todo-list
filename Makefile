@@ -1,2 +1,2 @@
 build:
-	g++ todo-list.cpp database/database.cpp -lsqlite3
+	g++ main.cpp database/database.cpp -lsqlite3
