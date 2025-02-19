@@ -1,6 +1,11 @@
+#ifndef DATABASE_HPP
+
+#define DATABASE_HPP
+
 #include <iostream>
 #include <memory>
 #include <sqlite3.h>
+#include <stdexcept>
 
 class Database {
 public:
@@ -21,3 +26,5 @@ private:
   explicit Database(const std::string &);
   void create_tables();
 };
+
+#endif // !DATABASE_HPP
