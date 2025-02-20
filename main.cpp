@@ -1,6 +1,11 @@
 #include "database/database.hpp"
+#include <cstdlib>
+#include <string>
 
 int main() {
-  auto &db = Database::get_instance("todo-list.db");
+  std::string home{std::getenv("HOME")};
+  std::string db_path{home.append("/todo-list.db")};
+
+  auto &db{Database::get_instance(db_path)};
   return 0;
 }
