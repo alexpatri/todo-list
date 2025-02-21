@@ -14,8 +14,13 @@ public:
 
   bool switch_status(void);
 
+  std::string get_desc(void);
+  std::time_t get_date(void);
+  int get_section(void);
+  bool get_status(void);
+
 private:
-  std::string decription;
+  std::string description;
   std::time_t date;
   bool is_finished;
   int section;
