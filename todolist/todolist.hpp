@@ -6,7 +6,6 @@
 #include <string>
 
 namespace todo {
-// TODO: Criar a class Task
 class Task {
 public:
   Task(const std::string &, int);
@@ -26,8 +25,17 @@ private:
   int section;
 };
 
-// TODO: Criar a class Section
-//
+class Section {
+public:
+  Section(const std::string &);
+  ~Section();
+
+  std::string get_name(void);
+
+private:
+  std::string name;
+};
+
 // TODO: Criar a class List
 } // namespace todo
 
