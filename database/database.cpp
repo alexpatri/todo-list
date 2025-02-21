@@ -37,10 +37,21 @@ void Database::create_tables() {
         );
         )";
 
-  char *errMsg = nullptr;
-  if (sqlite3_exec(conn.get(), query, nullptr, nullptr, &errMsg) != SQLITE_OK) {
-    std::string error = "Error creating tables: " + std::string(errMsg);
-    sqlite3_free(errMsg);
+  char *err_msg = nullptr;
+  if (sqlite3_exec(conn.get(), query, nullptr, nullptr, &err_msg) !=
+      SQLITE_OK) {
+    std::string error = "Error creating tables: " + std::string(err_msg);
+    sqlite3_free(err_msg);
+    throw std::runtime_error(error);
+  }
+}
+
+void Database::execute_query(const std::string &q) {
+  char *err_msg = nullptr;
+  if (sqlite3_exec(conn.get(), q.c_str(), nullptr, nullptr, &err_msg) !=
+      SQLITE_OK) {
+    std::string error = "Erro executing query: " + std::string(err_msg);
+    sqlite3_free(err_msg);
     throw std::runtime_error(error);
   }
 }

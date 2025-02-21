@@ -2,8 +2,13 @@
 
 #define TODOLIST_HPP
 
+#include "../database/database.hpp"
+
 #include <ctime>
+#include <memory>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace todo {
 class Task {
@@ -37,6 +42,29 @@ private:
 };
 
 // TODO: Criar a class List
+class List {
+public:
+  List(Database *);
+  ~List();
+
+  void add_task(const std::string &desc, int section_id = -1);
+  void add_section(const std::string &name);
+  void assign_task_to_section(int task_id, int section_id);
+  void remove_task(int task_id);
+  void remove_section(int section_id);
+  void toggle_task_status(int task_id);
+
+  std::vector<Task> get_all_tasks();
+  std::vector<Task> get_tasks_by_section(int section_id);
+
+private:
+  std::unordered_map<int, Task> tasks;
+  std::unordered_map<int, Section> sections;
+  Database *db;
+
+  void execute_query(const std::string &query);
+  void load_from_db();
+};
 } // namespace todo
 
 #endif // !TODOLIST_HPP

@@ -10,10 +10,12 @@
 class Database {
 public:
   static std::unique_ptr<Database> &
-  get_instance(const std::string &db_path = "database.db");
+  get_instance(const std::string &db_path = "todo-list.db");
 
   Database(const Database &) = delete;
   Database &operator=(const Database &) = delete;
+
+  void execute_query(const std::string &);
 
   void close();
 
