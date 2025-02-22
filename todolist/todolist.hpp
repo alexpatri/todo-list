@@ -62,7 +62,6 @@ private:
   std::unordered_map<int, Section> sections;
   Database *db;
 
-  void execute_query(const std::string &query);
   void load_from_db();
 };
 } // namespace todo

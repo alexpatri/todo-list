@@ -37,13 +37,7 @@ void Database::create_tables() {
         );
         )";
 
-  char *err_msg = nullptr;
-  if (sqlite3_exec(conn.get(), query, nullptr, nullptr, &err_msg) !=
-      SQLITE_OK) {
-    std::string error = "Error creating tables: " + std::string(err_msg);
-    sqlite3_free(err_msg);
-    throw std::runtime_error(error);
-  }
+  execute_query(query);
 }
 
 void Database::execute_query(const std::string &q) {
