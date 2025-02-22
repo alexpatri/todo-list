@@ -1,12 +1,9 @@
 #include "todolist.hpp"
 
 // class Task
-todo::Task::Task(const std::string &desc, int section = -1) {
-  this->description = desc;
-  this->section = section;
-  this->is_finished = false;
-  this->date = std::time(NULL);
-}
+todo::Task::Task(const std::string &desc, int section)
+    : description(desc), section(section), is_finished(false),
+      date(std::time(nullptr)) {}
 
 todo::Task::~Task() {}
 
@@ -24,7 +21,7 @@ int todo::Task::get_section(void) { return this->section; }
 bool todo::Task::get_status(void) { return this->is_finished; }
 
 // class Section
-todo::Section::Section(const std::string &name) { this->name = name; }
+todo::Section::Section(const std::string &name) : name(name) {}
 
 todo::Section::~Section() {}
 

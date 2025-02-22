@@ -13,7 +13,7 @@
 namespace todo {
 class Task {
 public:
-  Task(const std::string &, int);
+  Task(const std::string &, int section = -1);
   ~Task();
 
   bool switch_status(void);
