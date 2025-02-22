@@ -2,8 +2,8 @@
 
 // class Task
 todo::Task::Task(const std::string &desc, int section)
-    : description(desc), section(section), is_finished(false),
-      date(std::time(nullptr)) {}
+    : description(desc), date(std::time(nullptr)), is_finished(false),
+      section(section) {}
 
 todo::Task::~Task() {}
 

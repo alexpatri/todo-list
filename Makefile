@@ -1,2 +1,2 @@
 build:
-	g++ main.cpp database/database.cpp todolist/todolist.cpp -lsqlite3
+	g++ -Werror -Wall main.cpp database/database.cpp todolist/todolist.cpp -lsqlite3
