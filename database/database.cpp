@@ -33,6 +33,7 @@ void Database::create_tables() {
             description TEXT,
             created_at DATE NOT NULL,
             section INTEGER,
+            status INTEGER,
             FOREIGN KEY (section) REFERENCES section(id)
         );
         )";
